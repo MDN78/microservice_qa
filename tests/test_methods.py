@@ -9,13 +9,11 @@ from app.models.User import User
 def test_create_user(app_url, new_user):
     response = requests.post(f"{app_url}/api/users/", json=new_user)
     assert response.status_code == HTTPStatus.CREATED
-    created_user = response.json()
-    User.model_validate(created_user)
-    print(created_user['id'])
-    assert created_user['email'] == new_user['email']
-    assert created_user['first_name'] == new_user['first_name']
+    created_user = User.model_validate(response.json())
+    assert created_user.email == new_user['email']
+    assert created_user.first_name == new_user['first_name']
 
-    requests.delete(f"{app_url}/api/users/{created_user['id']}")
+    requests.delete(f"{app_url}/api/users/{created_user.id}")
 
 
 # Тест на patch: изменение. Предусловия: созданный пользователь
@@ -24,9 +22,9 @@ def test_create_user(app_url, new_user):
 def test_update_user(app_url, create_new_user, email, delete_dummy_user):
     updated_user_info = {'email': email}
     res = requests.patch(f"{app_url}/api/users/{create_new_user}", json=updated_user_info)
-    User.model_validate(res.json())
+    updated_user = User.model_validate(res.json())
     assert res.status_code == HTTPStatus.OK
-    assert res.json()['email'] == updated_user_info['email']
+    assert updated_user.email == updated_user_info['email']
 
 
 # Тест на delete: удаление. Предусловия: созданный пользователь
