@@ -74,17 +74,11 @@ def new_user() -> dict:
 
 
 @pytest.fixture
-def create_new_user(app_url) -> int:
+def create_new_user(app_url, new_user) -> int:
     """
     Create new user with fake dates
     :return: user id
     """
-    new_user = {
-        "email": os.getenv("NEW_USER_EMAIL"),
-        "first_name": os.getenv("NEW_USER_FIRST_NAME"),
-        "last_name": os.getenv("NEW_USER_LAST_NAME"),
-        "avatar": os.getenv("NEW_USER_AVATAR")
-    }
     user = requests.post(f"{app_url}/api/users/", json=new_user)
     assert user.status_code == HTTPStatus.CREATED
     return user.json()['id']
