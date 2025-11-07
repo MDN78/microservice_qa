@@ -43,15 +43,15 @@
 
 ## Github-actions. Branch 'g_actions'
 
-1. Настроил деплой микросервиса с Github Actions.
-2. Обновил тесты  
+- Настроил деплой микросервиса с Github Actions.
+- Обновил тесты  
    [События для запуска workflow](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request)  
    [Git и GitHub flow](https://medium.com/@yanminthwin/understanding-github-flow-and-git-flow-957bc6e12220)
 
 ### Шаги 
 
-1. Создать директории `.github` -> `workflows`
-2. Создать файл `test.yml`
+- Создать директории `.github` -> `workflows`
+- Создать файл `test.yml`
     - Add parameters [github actions](https://github.com/actions/checkout),
     - Add [setup-python](https://github.com/actions/setup-python)
 
@@ -61,19 +61,31 @@
     python-version: '3.13'
 ```
 
-3. Commit and push code to Github
-4. Create pull_requests -> Actions
-5. Добавили логи к нашему wirkflow: [pytest result actions](https://github.com/pmeier/pytest-results-action) для этого в
+- Commit and push code to Github
+- Create pull_requests -> Actions
+- Добавили логи к нашему wirkflow: [pytest result actions](https://github.com/pmeier/pytest-results-action) для этого в
    файл `test.yml` добавим:
 
 ```yaml
    - run: pytest tests --junit-xml=test-results.xml
 ```
 
-6. Добавить пароль в репозиторий - repository secret and variables options. `settings->secret and variables->actions`
+- Добавить пароль в репозиторий - repository secret and variables options. `settings->secret and variables->actions`
 
 ### Добавлен новый workflows - release.yml для пуша в ветку 'main'  
+- Добавили новый файл
+- Добавили джобы `release` `deploy`
+- Добавили разрешения:
 
+```yaml
+  permissions:
+      contents: write
+```
+- Добавили GitHub token
+```yaml
+  env:
+      H_TOKEN: ${{ github.token }}
+```
 
 
 ### Запуск тестов локально:
