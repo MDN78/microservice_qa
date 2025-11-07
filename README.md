@@ -1,5 +1,7 @@
 ## Построение минимального микросервиса с FastApi. branch "Main"
+
 Применяемые механики:
+
 - загрузка файла `users.json` в память сервера
 - валидация данных файла при запуске сервера `uvicorn`
 - обработка исключений с помощью `HTTPException`
@@ -8,9 +10,10 @@
 - параметризация тестов `@pytest.mark.parametrize()`
 - тестирование доступности сервера через модель `AppStatus` - установка простого флага, что база существует
 - Использование библиотеки `fastapi-pagination` для базовой пагинации в эндпоинтах
-[fastapi-pagination](https://github.com/uriyyo/fastapi-pagination)
+  [fastapi-pagination](https://github.com/uriyyo/fastapi-pagination)
 
 ### Тесты:
+
 - Получение пользователя
 - Получение списка пользователей
 - Проверка отсутствия дубликатов
@@ -21,6 +24,7 @@
 ## Добавление базы данных PostgreSQL. branch "database"
 
 Реализованы новые тесты `test_methods`:
+
 - [x] Тест на post: создание
 - [x] Тест на delete: удаление
 - [x] Тест на patch: изменение
@@ -28,20 +32,54 @@
 - [x] Тест на 422 ошибку - отправить модель без поля на создание
 - [x] Тест 404 на удаленного пользователя
 
+## Запуск микросервиса в Docker. branch 'docker'
 
-## Запуск микросервиса в Docker. branch 'docker'  
 - добавлен `Dockerfile`
-- вынесены имя пользователя, пароль и имя базы данных в `.env` через использование переменных {DATABASE_USER}, {POSTGRES_PASSWORD}  
+- вынесены имя пользователя, пароль и имя базы данных в `.env` через использование переменных {DATABASE_USER},
+  {POSTGRES_PASSWORD}
 - настроен запуск контейнера с подключением к базе данных
 - сборка и запуск производится одной командой
 - добавлен файл `.dockerignore`
 
-## Github-actions  
+## Github-actions. Branch 'g_actions'
+
+1. Настроил деплой микросервиса с Github Actions.
+2. Обновил тесты  
+   [События для запуска workflow](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request)  
+   [Git и GitHub flow](https://medium.com/@yanminthwin/understanding-github-flow-and-git-flow-957bc6e12220)
+
+### Шаги 
+
+1. Создать директории `.github` -> `workflows`
+2. Создать файл `test.yml`
+    - Add parameters [github actions](https://github.com/actions/checkout),
+    - Add [setup-python](https://github.com/actions/setup-python)
+
+```yaml
+- uses: actions/setup-python@v6
+  with:
+    python-version: '3.13'
+```
+
+3. Commit and push code to Github
+4. Create pull_requests -> Actions
+5. Добавили логи к нашему wirkflow: [pytest result actions](https://github.com/pmeier/pytest-results-action) для этого в
+   файл `test.yml` добавим:
+
+```yaml
+   - run: pytest tests --junit-xml=test-results.xml
+```
+
+6. Добавить пароль в репозиторий - repository secret and variables options. `settings->secret and variables->actions`
+
+### Добавлен новый workflows - release.yml для пуша в ветку 'main'  
 
 
-### Запуск тестов:
+
+### Запуск тестов локально:
 
 Запуск Docker локально командой
+
 ```commandline
 docker compose up -d
 ```
@@ -53,11 +91,13 @@ pytest
 ```
 
 Остановка Docker локально командой
+
 ```commandline
 docker compose down
 ```
 
-завершить процессы postgres для освобождения порта - команда терминала: 
+Завершить процессы postgres для освобождения порта - команда терминала:
+
 ```commandline
 sudo pkill -9 postgres
 ```
