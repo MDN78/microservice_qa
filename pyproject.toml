@@ -3,7 +3,7 @@ name = "microservice-qa"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Dimitri Maksimov",email = "salesakk@gmail.com"}
+    { name = "Dimitri Maksimov", email = "salesakk@gmail.com" }
 ]
 readme = "README.md"
 requires-python = "^3.13"
@@ -24,14 +24,9 @@ dependencies = [
 ]
 
 [tool.pytest.ini_options]
-python_files = [
-    "*_tests.py",
-    "test_*.py"
-]
-addopts = [
-    "-v",
-    "-s"
-]
+python_files = ["*_tests.py", "test_*.py"]
+addopts = ["-v", "-s"]
+pythonpath = '.'
 
 
 [build-system]
