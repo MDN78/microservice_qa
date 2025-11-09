@@ -18,7 +18,7 @@ def envs():
 @pytest.fixture(scope="session")
 def app_url():
     """Return app url"""
-    return os.getenv("APP_URL")
+    return os.getenv("APP_URL", "http://127.0.0.1:8002")
 
 
 @pytest.fixture
