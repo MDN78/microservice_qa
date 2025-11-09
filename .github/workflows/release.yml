@@ -12,17 +12,25 @@ jobs:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: 'pip'
-      - run: pip install --upgrade -r requirements.txt
+      - name: installing poetry
+        uses: abatilo/actions-poetry@v4
+      - name: Load cached venv
+        uses: actions/cache@v3
+        with:
+          path: venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-ansi --no-root
       - run: docker compose build
       - run: docker compose up -d
       - run: sleep 5
-      - run: pytest tests --junit-xml=test-results.xml
+      - run: poetry run pytest tests --junit-xml=test-results.xml
         env:
-          APP_URL: http://127.0.0.1:8002
+          APP_URL: http://localhost:8081/api
 
       - run: docker compose logs app
         if: always()

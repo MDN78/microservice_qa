@@ -2,10 +2,15 @@ FROM python:3.13
 
 WORKDIR /code
 
-COPY ./requirements.txt /code/requirements.txt
+RUN pip install poetry
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+COPY pyproject.toml poetry.lock* /code/
+
+RUN poetry config virtualenvs.create false
+
+RUN poetry install --no-interaction --no-ansi --no-root
 
 COPY ./app /code/app
 
 CMD ["fastapi", "run", "app/main.py", "--port", "80"]
+
