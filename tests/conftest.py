@@ -45,7 +45,7 @@ def fill_test_data(app_url):
     Preconditions - add users to database.
     Postconditions - delete created users from database.
     """
-    file_path = Path(__file__).parent.parent / "users.json"
+    file_path = Path(__file__).parent.parent/"users.json"
     with open(file_path, 'r') as f:
         test_data_users = json.load(f)
     api_users = []
