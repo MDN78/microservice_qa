@@ -1,6 +1,8 @@
 from http import HTTPStatus
 import os
 import json
+from pathlib import Path
+
 import dotenv
 import pytest
 import requests
@@ -43,12 +45,20 @@ def fill_test_data(app_url):
     Preconditions - add users to database.
     Postconditions - delete created users from database.
     """
-    with open("users.json") as f:
+    file_path = Path(__file__).parent.parent / "users.json"
+    with open(file_path, 'r') as f:
         test_data_users = json.load(f)
     api_users = []
     for user in test_data_users:
         response = requests.post(f"{app_url}/api/users/", json=user)
         api_users.append(response.json())
+
+    # with open("users.json") as f:
+    #     test_data_users = json.load(f)
+    # api_users = []
+    # for user in test_data_users:
+    #     response = requests.post(f"{app_url}/api/users/", json=user)
+    #     api_users.append(response.json())
 
     user_ids = [user["id"] for user in api_users]
 
