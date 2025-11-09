@@ -53,13 +53,6 @@ def fill_test_data(app_url):
         response = requests.post(f"{app_url}/api/users/", json=user)
         api_users.append(response.json())
 
-    # with open("users.json") as f:
-    #     test_data_users = json.load(f)
-    # api_users = []
-    # for user in test_data_users:
-    #     response = requests.post(f"{app_url}/api/users/", json=user)
-    #     api_users.append(response.json())
-
     user_ids = [user["id"] for user in api_users]
 
     yield user_ids
