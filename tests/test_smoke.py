@@ -3,10 +3,11 @@ import socket
 import requests
 import pytest
 from http import HTTPStatus
+from clients.users_api import UsersApi
 
 
-def test_status(app_url):
-    response = requests.get(f"{app_url}/status")
+def test_status(users_api: UsersApi):
+    response = users_api.get_app_status()
     assert response.status_code == HTTPStatus.OK
 
 
@@ -16,8 +17,8 @@ def test_server_responds_on_port(port):
         assert True, f"Server should be responding on port {port}."
 
 
-def test_status_users_dates(app_url):
-    response = requests.get(f"{app_url}/status")
+def test_status_users_dates(users_api: UsersApi):
+    response = users_api.get_app_status()
     result = response.json()
     assert result['database'] == True
 

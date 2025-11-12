@@ -79,7 +79,7 @@
 
 ```yaml
   permissions:
-      contents: write
+    contents: write
 ```
 - Добавили GitHub token
 ```yaml
